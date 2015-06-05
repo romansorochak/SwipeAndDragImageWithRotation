@@ -25,6 +25,8 @@ class ViewController: UIViewController {
     private var xTouchOnBeganFromCenter: CGFloat = 0
     
     
+    // MARK - ViewController life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -34,6 +36,7 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
     // MARK - touch handlers
     
@@ -71,6 +74,9 @@ class ViewController: UIViewController {
                 }
                 
                 self.frontCenterXDraggableConstraint.constant = moveOn
+                
+                let angle = atan2(moveOn, self.frontImageView.frame.height)
+                self.frontImageView.transform = CGAffineTransformMakeRotation(angle)
             }
         }
     }
@@ -157,13 +163,17 @@ class ViewController: UIViewController {
         UIView.animateWithDuration(0.4, animations: { () -> Void in
             
             self.frontCenterXDraggableConstraint.constant = -500
+            let angle = atan2(-5000, self.frontImageView.frame.height)
+            self.frontImageView.transform = CGAffineTransformMakeRotation(angle)
             self.frontImageView.layoutIfNeeded()
             
             }) { _ in
                 
                 self.frontImageView.image = self.backImageView.image
                 self.backImageView.image = self.goToNextImage()
+                
                 self.frontCenterXDraggableConstraint.constant = 0
+                self.frontImageView.transform = CGAffineTransformMakeRotation(0)
         }
     }
     
@@ -172,13 +182,17 @@ class ViewController: UIViewController {
         UIView.animateWithDuration(0.4, animations: { () -> Void in
             
             self.frontCenterXDraggableConstraint.constant = 500
+            let angle = atan2(5000, self.frontImageView.frame.height)
+            self.frontImageView.transform = CGAffineTransformMakeRotation(angle)
             self.frontImageView.layoutIfNeeded()
             
             }) { _ in
                 
                 self.frontImageView.image = self.backImageView.image
                 self.backImageView.image = self.goToPreviousImage()
+                
                 self.frontCenterXDraggableConstraint.constant = 0
+                self.frontImageView.transform = CGAffineTransformMakeRotation(0)
         }
     }
     
@@ -187,6 +201,7 @@ class ViewController: UIViewController {
         UIView.animateWithDuration(0.4, animations: { () -> Void in
             
             self.frontCenterXDraggableConstraint.constant = 0
+            self.frontImageView.transform = CGAffineTransformMakeRotation(0)
             self.frontImageView.layoutIfNeeded()
         })
     }
